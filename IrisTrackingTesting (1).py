@@ -133,8 +133,7 @@ while True:
     if k == 27:
         break
 
-print fx
-print fy
+
 cap.release()
 cv2.destroyAllWindows()
-print xvalues
+
