@@ -54,7 +54,7 @@
 
 <p>The (x,y) coordinates of the detected iris center are individually mapped to a set of known x values and known y values. A polynomial fit is applied to the points for the x and the y set, creating two individual functions to describe the movement of the gaze x with respect the eye center x, and the gaze y with respect to the eye center y. </p>
 
-<div class="highlight highlight-python"><pre>q <span class="pl-k">=</span> cv2.waitKey(<span class="pl-c1">25</span>)
+<div class="highlight highlight-Python"><pre>q <span class="pl-k">=</span> cv2.waitKey(<span class="pl-c1">25</span>)
 <span class="pl-k">if</span> q <span class="pl-k">==</span> <span class="pl-c1">ord</span>(<span class="pl-s"><span class="pl-pds">'</span>q<span class="pl-pds">'</span></span>):
     <span class="pl-k">if</span> <span class="pl-c1">len</span>(fx) <span class="pl-k">&lt;</span> <span class="pl-c1">3</span>:
         <span class="pl-k">if</span> circles <span class="pl-k">is</span>  <span class="pl-c1">None</span>:
