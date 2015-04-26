@@ -49,6 +49,70 @@
 
 <p><img src="http://lh3.googleusercontent.com/A32PiQfU7tHprbIazj5lnlh8ziT-n4jA-kC5YuMBa2Y=w457-h207-p-no" alt="Hough Circle Transform"></p>
 
+<h3>
+<a id="calibration" class="anchor" href="#calibration" aria-hidden="true"><span class="octicon octicon-link"></span></a>Calibration</h3>
+
+<p>The (x,y) coordinates of the detected iris center are individually mapped to a set of known x values and known y values. A polynomial fit is applied to the points for the x and the y set, creating two individual functions to describe the movement of the gaze x with respect the eye center x, and the gaze y with respect to the eye center y. </p>
+
+<div class="highlight highlight-python"><pre>
+    q <span class="pl-k">=</span> cv2.waitKey(<span class="pl-c1">25</span>)
+    <span class="pl-k">if</span> q <span class="pl-k">==</span> <span class="pl-c1">ord</span>(<span class="pl-s"><span class="pl-pds">'</span>q<span class="pl-pds">'</span></span>):
+        <span class="pl-k">if</span> <span class="pl-c1">len</span>(fx) <span class="pl-k">&lt;</span> <span class="pl-c1">3</span>:
+            <span class="pl-k">if</span> circles <span class="pl-k">is</span>  <span class="pl-c1">None</span>:
+                <span class="pl-k">print</span> <span class="pl-s"><span class="pl-pds">"</span>Did not find circles<span class="pl-pds">"</span></span>
+
+            <span class="pl-k">else</span>:
+                circles <span class="pl-k">=</span> np.uint16(np.around(circles))
+                <span class="pl-k">for</span> (x,y,r) <span class="pl-k">in</span> circles[<span class="pl-c1">0</span>, :]:
+                    fx.append(x)
+                    <span class="pl-k">print</span> <span class="pl-s"><span class="pl-pds">"</span>X CALIBRATION POINT NUMBER<span class="pl-pds">"</span></span> <span class="pl-k">+</span> <span class="pl-c1">str</span>(<span class="pl-c1">len</span>(fx))
+
+    w <span class="pl-k">=</span> cv2.waitKey(<span class="pl-c1">25</span>)
+    <span class="pl-k">if</span> w <span class="pl-k">==</span> <span class="pl-c1">ord</span>(<span class="pl-s"><span class="pl-pds">'</span>w<span class="pl-pds">'</span></span>):
+        <span class="pl-k">if</span> <span class="pl-c1">len</span>(fy) <span class="pl-k">&lt;</span> <span class="pl-c1">3</span>:
+            <span class="pl-k">if</span> circles <span class="pl-k">is</span>  <span class="pl-c1">None</span>:
+                <span class="pl-k">print</span> <span class="pl-s"><span class="pl-pds">"</span>Did not find circles<span class="pl-pds">"</span></span>
+
+            <span class="pl-k">else</span>:
+                circles <span class="pl-k">=</span> np.uint16(np.around(circles))
+                <span class="pl-k">for</span> (x,y,r) <span class="pl-k">in</span> circles[<span class="pl-c1">0</span>, :]:
+                    fy.append(y)
+                    <span class="pl-k">print</span> <span class="pl-s"><span class="pl-pds">"</span>Y CALIBRATION POINT NUMBER<span class="pl-pds">"</span></span> <span class="pl-k">+</span> <span class="pl-c1">str</span>(<span class="pl-c1">len</span>(fy))
+
+
+     <span class="pl-k">if</span> <span class="pl-c1">len</span>(fy) <span class="pl-k">==</span> <span class="pl-c1">3</span>:
+        fx <span class="pl-k">=</span> np.array(fx)
+        fy <span class="pl-k">=</span> np.array(fy)
+
+        xcalib <span class="pl-k">=</span> np.array(xcalib)
+        ycalib <span class="pl-k">=</span> np.array(ycalib)
+
+        xcoefficients <span class="pl-k">=</span> np.polyfit(fx, xcalib, <span class="pl-c1">5</span>)
+        ycoefficients <span class="pl-k">=</span> np.polyfit(fy, ycalib, <span class="pl-c1">5</span>)
+
+        xpolynomial <span class="pl-k">=</span> np.poly1d(xcoefficients)
+        ypolynomial <span class="pl-k">=</span> np.poly1d(ycoefficients)
+
+        xs <span class="pl-k">=</span> np.arange(<span class="pl-c1">0</span>, <span class="pl-c1">640</span>)
+        ys <span class="pl-k">=</span> np.arange(<span class="pl-c1">0</span>, <span class="pl-c1">480</span>)
+
+        fxs <span class="pl-k">=</span> xpolynomial(xs)
+        fys <span class="pl-k">=</span> ypolynomial(ys)
+
+
+        yplot <span class="pl-k">=</span> figure()
+        ax1 <span class="pl-k">=</span> yplot.add_subplot(<span class="pl-c1">111</span>)
+        ax1.plot(ys, fys)
+        ax1.scatter(ycalib, fy)
+
+        xplot <span class="pl-k">=</span> figure()
+        ax2 <span class="pl-k">=</span> xplot.add_subplot(<span class="pl-c1">111</span>)
+        ax2.plot(xs, fxs)
+        ax2.scatter(xcalib, fx)
+
+        show()
+</pre></div>
+
 <h1>
 <a id="proposed-headset-design" class="anchor" href="#proposed-headset-design" aria-hidden="true"><span class="octicon octicon-link"></span></a>Proposed Headset Design</h1>
 
